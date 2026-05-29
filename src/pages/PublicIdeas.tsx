@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { Search, Filter, Eye, Calendar, User, FileText } from 'lucide-react';
 
 export default function PublicIdeas() {
@@ -20,7 +21,7 @@ export default function PublicIdeas() {
       if (searchTerm) params.append('search', searchTerm);
       if (categoryFilter) params.append('category', categoryFilter);
 
-      const { data } = await axios.get(`http://localhost:5000/api/public/ideas?${params.toString()}`);
+      const { data } = await axios.get(`${API_BASE}/api/public/ideas?${params.toString()}`);
       setIdeas(data);
     } catch (err) {
       console.error('Failed to fetch ideas:', err);

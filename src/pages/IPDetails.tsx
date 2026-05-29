@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { ArrowLeft, Clock, Download, ShieldCheck, User, X, Edit } from 'lucide-react';
 
 export default function IPDetails() {
@@ -24,7 +25,7 @@ export default function IPDetails() {
     const fetchAuth = async () => {
       try {
         const token = localStorage.getItem('token');
-        const { data } = await axios.get(`http://localhost:5000/api/ip/${id}`, {
+        const { data } = await axios.get(`${API_BASE}/api/ip/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setIp(data);
@@ -40,11 +41,11 @@ export default function IPDetails() {
     setInstalling(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:5000/api/ip/${id}/install-document`, {}, {
+      await axios.post(`${API_BASE}/api/ip/${id}/install-document`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Refresh the IP data
-      const { data } = await axios.get(`http://localhost:5000/api/ip/${id}`, {
+      const { data } = await axios.get(`${API_BASE}/api/ip/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIp(data);
@@ -58,7 +59,7 @@ export default function IPDetails() {
   const handleDownloadDocument = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/ip/${id}/download-document`, {
+      const response = await axios.get(`${API_BASE}/api/ip/${id}/download-document`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'blob'
       });
@@ -80,7 +81,7 @@ export default function IPDetails() {
   const loadPhoto = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/ip/${id}/download?view=true`, {
+      const response = await axios.get(`${API_BASE}/api/ip/${id}/download?view=true`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'blob'
       });
@@ -256,7 +257,7 @@ export default function IPDetails() {
                     </div>
                     <div className="mt-4 flex gap-3">
                       <a
-                        href={`http://localhost:5000/api/ip/${ip.id}/download`}
+                        href={`${API_BASE}/api/ip/${ip.id}/download`}
                         download
                         className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium transition-colors"
                       >

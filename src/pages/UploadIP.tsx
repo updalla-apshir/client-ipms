@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { UploadCloud, ArrowLeft } from 'lucide-react';
 
 export default function UploadIP() {
@@ -27,7 +28,7 @@ export default function UploadIP() {
         const token = localStorage.getItem('token');
         if (!token) return navigate('/login');
 
-        const { data } = await axios.get('http://localhost:5000/api/auth/me', {
+        const { data } = await axios.get(`${API_BASE}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUser(data);
@@ -60,7 +61,7 @@ export default function UploadIP() {
 
     try {
       const token = localStorage.getItem('token');
-      const { data } = await axios.post('http://localhost:5000/api/ip/upload', formData, {
+      const { data } = await axios.post(`${API_BASE}/api/ip/upload`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

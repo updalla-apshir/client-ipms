@@ -3,6 +3,7 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { LayoutDashboard, UploadCloud, FolderLock, User as UserIcon, LogOut, Users, List, FileText, FilePlus } from 'lucide-react';
 import clsx from 'clsx';
 import axios from 'axios';
+import { API_BASE } from '../config';
 
 export default function Layout() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Layout() {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          const { data } = await axios.get('http://localhost:5000/api/auth/me', {
+          const { data } = await axios.get(`${API_BASE}/api/auth/me`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           setUser(data);

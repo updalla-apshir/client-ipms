@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { ArrowLeft, Save } from 'lucide-react';
 
 export default function EditIP() {
@@ -28,7 +29,7 @@ export default function EditIP() {
         const token = localStorage.getItem('token');
         if (!token) return navigate('/login');
 
-        const { data: userData } = await axios.get('http://localhost:5000/api/auth/me', {
+        const { data: userData } = await axios.get(`${API_BASE}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUser(userData);
@@ -40,7 +41,7 @@ export default function EditIP() {
     const fetchIP = async () => {
       try {
         const token = localStorage.getItem('token');
-        const { data } = await axios.get(`http://localhost:5000/api/ip/${id}`, {
+        const { data } = await axios.get(`${API_BASE}/api/ip/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -55,7 +56,7 @@ export default function EditIP() {
         setOwnerPlaceOfBirth(data.owner_place_of_birth || '');
 
         if (data.photo_path) {
-          setCurrentPhotoUrl(`http://localhost:5000/api/ip/${id}/download?view=true`);
+          setCurrentPhotoUrl(`${API_BASE}/api/ip/${id}/download?view=true`);
         }
       } catch (err: any) {
         if (err.response?.status === 401) navigate('/login');
@@ -90,7 +91,7 @@ export default function EditIP() {
 
     try {
       const token = localStorage.getItem('token');
-      const { data } = await axios.put(`http://localhost:5000/api/ip/${id}`, formData, {
+      const { data } = await axios.put(`${API_BASE}/api/ip/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

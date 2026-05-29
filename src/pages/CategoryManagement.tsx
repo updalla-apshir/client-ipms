@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { PlusCircle, ArrowLeft, Search, Edit, Trash2, X } from 'lucide-react';
 
 interface Category {
@@ -40,7 +41,7 @@ export default function CategoryManagement() {
       const params: any = {};
       if (searchTerm) params.search = searchTerm;
 
-      const { data } = await axios.get('http://localhost:5000/api/categories', {
+      const { data } = await axios.get(`${API_BASE}/api/categories`, {
         headers: { Authorization: `Bearer ${token}` },
         params
       });
@@ -57,11 +58,11 @@ export default function CategoryManagement() {
     try {
       const token = localStorage.getItem('token');
       if (editingCategory) {
-        await axios.put(`http://localhost:5000/api/categories/${editingCategory.id}`, formData, {
+        await axios.put(`${API_BASE}/api/categories/${editingCategory.id}`, formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       } else {
-        await axios.post('http://localhost:5000/api/categories', formData, {
+        await axios.post(`${API_BASE}/api/categories`, formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
@@ -81,7 +82,7 @@ export default function CategoryManagement() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/categories/${id}`, {
+      await axios.delete(`${API_BASE}/api/categories/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchCategories();

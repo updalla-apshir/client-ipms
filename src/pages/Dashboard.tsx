@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { PlusCircle, UploadCloud, FolderOpen, Users } from 'lucide-react';
 
 export default function Dashboard() {
@@ -13,7 +14,7 @@ export default function Dashboard() {
         const token = localStorage.getItem('token');
         if (!token) return navigate('/login');
 
-        const { data } = await axios.get('http://localhost:5000/api/ip/stats', { headers: { Authorization: `Bearer ${token}` } });
+        const { data } = await axios.get(`${API_BASE}/api/ip/stats`, { headers: { Authorization: `Bearer ${token}` } });
         setStats(data);
       } catch (err) {
         navigate('/login');

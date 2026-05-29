@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { PlusCircle, ArrowLeft, Search, Trash2, X, Download } from 'lucide-react';
 
 interface Document {
@@ -51,7 +52,7 @@ export default function DocumentManagement() {
       const params: any = {};
       if (searchTerm) params.search = searchTerm;
 
-      const { data } = await axios.get('http://localhost:5000/api/documents', {
+      const { data } = await axios.get(`${API_BASE}/api/documents`, {
         headers: { Authorization: `Bearer ${token}` },
         params
       });
@@ -64,7 +65,7 @@ export default function DocumentManagement() {
   const fetchApplications = async () => {
     try {
       const token = localStorage.getItem('token');
-      const { data } = await axios.get('http://localhost:5000/api/applications', {
+      const { data } = await axios.get(`${API_BASE}/api/applications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setApplications(data);
@@ -92,7 +93,7 @@ export default function DocumentManagement() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/documents', docFormData, {
+      await axios.post(`${API_BASE}/api/documents`, docFormData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowModal(false);
@@ -111,7 +112,7 @@ export default function DocumentManagement() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/documents/${id}`, {
+      await axios.delete(`${API_BASE}/api/documents/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchDocuments();
@@ -123,7 +124,7 @@ export default function DocumentManagement() {
   const handleDownload = async (id: number) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/documents/${id}/download`, {
+      const response = await axios.get(`${API_BASE}/api/documents/${id}/download`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'blob'
       });

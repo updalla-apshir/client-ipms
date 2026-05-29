@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { ArrowLeft, CreditCard, Smartphone, Wallet, CheckCircle, Loader2, ShieldCheck, DollarSign } from 'lucide-react';
 
 interface CostItem {
@@ -60,7 +61,7 @@ export default function Payment() {
       try {
         const token = localStorage.getItem('token');
         if (!token) return navigate('/login');
-        const { data } = await axios.get(`http://localhost:5000/api/ip/${ipId}`, {
+        const { data } = await axios.get(`${API_BASE}/api/ip/${ipId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (data.payment_status === 'paid') {
@@ -125,7 +126,7 @@ export default function Payment() {
     if (!ipId || !txId) return;
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:5000/api/ip/${ipId}/finalize-payment`, {
+      await axios.post(`${API_BASE}/api/ip/${ipId}/finalize-payment`, {
         payment_method: selectedMethod,
         transaction_id: txId,
         amount: total

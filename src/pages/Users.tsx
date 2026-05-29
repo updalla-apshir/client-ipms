@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { Plus, Shield, Search, Filter } from 'lucide-react';
 
 export default function Users() {
@@ -15,7 +16,7 @@ export default function Users() {
   const makeAdmin = async (id: string) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/auth/users/${id}/make-admin`, {}, {
+      await axios.put(`${API_BASE}/api/auth/users/${id}/make-admin`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(users.map((u: any) => u.id === id ? { ...u, role: 'admin' } : u));
@@ -39,8 +40,8 @@ export default function Users() {
         if (!token) return navigate('/login');
 
         const [usersRes, userRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/auth/users', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('http://localhost:5000/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
+          axios.get(`${API_BASE}/api/auth/users`, { headers: { Authorization: `Bearer ${token}` } }),
+          axios.get(`${API_BASE}/api/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
         ]);
         setUsers(usersRes.data);
         if (userRes.data.role !== 'admin') navigate('/dashboard');
@@ -56,13 +57,13 @@ export default function Users() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/auth/create-user', createForm, {
+      await axios.post(`${API_BASE}/api/auth/create-user`, createForm, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowForm(false);
       setCreateForm({ name: '', email: '', password: '', role: 'user' });
       // Refetch users
-      const { data } = await axios.get('http://localhost:5000/api/auth/users', {
+      const { data } = await axios.get(`${API_BASE}/api/auth/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(data);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { FolderLock, Trash2, Search, Filter, Edit } from 'lucide-react';
 
 export default function MyIP() {
@@ -16,7 +17,7 @@ export default function MyIP() {
   const fetchIPs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const { data } = await axios.get('http://localhost:5000/api/ip/my-assets', {
+      const { data } = await axios.get(`${API_BASE}/api/ip/my-assets`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIps(data);
@@ -37,7 +38,7 @@ export default function MyIP() {
     if (!confirm('Are you sure you want to permanently delete this IP record?')) return;
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/ip/${id}`, {
+      await axios.delete(`${API_BASE}/api/ip/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIps(ips.filter((ip: any) => ip.id !== id));

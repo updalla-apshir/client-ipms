@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { PlusCircle, ArrowLeft, Search, Edit, Trash2, X } from 'lucide-react';
 
 interface Review {
@@ -52,7 +53,7 @@ export default function ReviewManagement() {
       const params: any = {};
       if (searchTerm) params.search = searchTerm;
 
-      const { data } = await axios.get('http://localhost:5000/api/reviews', {
+      const { data } = await axios.get(`${API_BASE}/api/reviews`, {
         headers: { Authorization: `Bearer ${token}` },
         params
       });
@@ -65,7 +66,7 @@ export default function ReviewManagement() {
   const fetchApplications = async () => {
     try {
       const token = localStorage.getItem('token');
-      const { data } = await axios.get('http://localhost:5000/api/applications', {
+      const { data } = await axios.get(`${API_BASE}/api/applications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setApplications(data);
@@ -86,11 +87,11 @@ export default function ReviewManagement() {
       };
 
       if (editingReview) {
-        await axios.put(`http://localhost:5000/api/reviews/${editingReview.id}`, submitData, {
+        await axios.put(`${API_BASE}/api/reviews/${editingReview.id}`, submitData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       } else {
-        await axios.post('http://localhost:5000/api/reviews', submitData, {
+        await axios.post(`${API_BASE}/api/reviews`, submitData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
@@ -110,7 +111,7 @@ export default function ReviewManagement() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/reviews/${id}`, {
+      await axios.delete(`${API_BASE}/api/reviews/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchReviews();

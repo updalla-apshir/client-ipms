@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { PlusCircle, ArrowLeft, Search, Edit, Trash2, X } from 'lucide-react';
 
 interface Application {
@@ -54,7 +55,7 @@ export default function ApplicationManagement() {
       const params: any = {};
       if (searchTerm) params.search = searchTerm;
 
-      const { data } = await axios.get('http://localhost:5000/api/applications', {
+      const { data } = await axios.get(`${API_BASE}/api/applications`, {
         headers: { Authorization: `Bearer ${token}` },
         params
       });
@@ -67,7 +68,7 @@ export default function ApplicationManagement() {
   const fetchCategories = async () => {
     try {
       const token = localStorage.getItem('token');
-      const { data } = await axios.get('http://localhost:5000/api/categories', {
+      const { data } = await axios.get(`${API_BASE}/api/categories`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCategories(data.filter((c: Category) => c.status === 'Active'));
@@ -88,11 +89,11 @@ export default function ApplicationManagement() {
       };
 
       if (editingApplication) {
-        await axios.put(`http://localhost:5000/api/applications/${editingApplication.id}`, submitData, {
+        await axios.put(`${API_BASE}/api/applications/${editingApplication.id}`, submitData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       } else {
-        await axios.post('http://localhost:5000/api/applications', submitData, {
+        await axios.post(`${API_BASE}/api/applications`, submitData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
@@ -112,7 +113,7 @@ export default function ApplicationManagement() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/applications/${id}`, {
+      await axios.delete(`${API_BASE}/api/applications/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchApplications();

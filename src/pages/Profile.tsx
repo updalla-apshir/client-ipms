@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { User, Mail, Lock, CheckCircle } from 'lucide-react';
 
 export default function Profile() {
@@ -17,7 +18,7 @@ export default function Profile() {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
-        const { data } = await axios.get('http://localhost:5000/api/auth/me', {
+        const { data } = await axios.get(`${API_BASE}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setName(data.name);
@@ -36,7 +37,7 @@ export default function Profile() {
     setSuccess(false);
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/auth/profile', 
+      await axios.put(`${API_BASE}/api/auth/profile`, 
         { name, email, password: password || undefined },
         { headers: { Authorization: `Bearer ${token}` } }
       );
