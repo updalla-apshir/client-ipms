@@ -119,40 +119,6 @@ export default function ReviewManagement() {
     }
   };
 
-  const handleApprove = async (appId: number) => {
-    if (!confirm('Are you sure you want to approve this application?')) return;
-
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:5000/api/applications/${appId}/approve`, {
-        reviewer_name: 'Admin',
-        comments: 'Application approved via review system'
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      fetchReviews();
-    } catch (err: any) {
-      alert('Failed to approve application');
-    }
-  };
-
-  const handleReject = async (appId: number) => {
-    if (!confirm('Are you sure you want to reject this application?')) return;
-
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:5000/api/applications/${appId}/reject`, {
-        reviewer_name: 'Admin',
-        comments: 'Application rejected via review system'
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      fetchReviews();
-    } catch (err: any) {
-      alert('Failed to reject application');
-    }
-  };
-
   const openEditModal = (review: Review) => {
     setEditingReview(review);
     setFormData({

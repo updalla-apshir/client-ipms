@@ -18,6 +18,7 @@ interface Application {
 interface Category {
   id: number;
   category_name: string;
+  status: string;
 }
 
 export default function ApplicationManagement() {
